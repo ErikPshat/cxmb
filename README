@@ -1,0 +1,6 @@
+To build a full version of CXMB, type
+	make full
+for a lite version
+	make lite
+and for a debug version, type
+	make debug
