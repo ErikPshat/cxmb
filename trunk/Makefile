@@ -20,33 +20,38 @@
 #	Author:		Poison <hbpoison@gmail.com>
 #	Date Created:	2008-07-01
 
-TARGET			= cxmb
-SRCS			= log.c syspatch.c utils.c ctf.c main.c
-OBJS			= $(SRCS:.c=.o)
+full:
+	make clean
+	make -f Makefile.PSP
 
-BUILD_PRX		= 1
-USE_KERNEL_LIBC	= 1
-USE_KERNEL_LIBS = 1
-PSP_FW_VERSION	= 401
+clean:
+	make -f Makefile.PSP clean
 
-PRX_EXPORTS		= exports.exp
+lite:
+	make clean
+	CXMB_LITE=1 make -f Makefile.PSP
 
-INCDIR			=
-LIBDIR			=
-LDFLAGS			= -mno-crt0 -nostartfiles
-LIBS			=
-CFLAGS			= -Os -G0 -Wall -fno-strict-aliasing -fno-builtin-printf -D_DEBUG=1 -D_CXMB_LITE=0
-CXXFLAGS		= $(CFLAGS) -fno-exceptions -fno-rtti
-ASFLAGS			= $(CFLAGS)
-
-PSPSDK			= $(shell psp-config --pspsdk-path)
-include $(PSPSDK)/lib/build.mak
-
-install:
-	cp cxmb.prx /Volumes/NO\ NAME/cxmb/
-	rm -f /Volumes/NO\ NAME/log.txt
-	rm -rf /Volumes/NO\ NAME/DUMP
-	diskutil eject /Volumes/NO\ NAME/
+debug:
+	make clean
+	DEBUG=1 make -f Makefile.PSP
 	
-vlog:
-	mate /Volumes/NO\ NAME/log.txt
+release:
+	rm -f cxmb_release.tar.gz
+	rm -rf cxmb_release
+	install -d cxmb_release/full/cxmb/support/
+	install -d cxmb_release/full/PSP/THEME/
+	cp support/random.ctf cxmb_release/full/PSP/THEME/
+	install -d cxmb_release/full/seplugins/
+	echo ms0:/cxmb/cxmb.prx > cxmb_release/full/seplugins/vsh.txt
+	touch cxmb_release/full/cxmb/support/decrypted\ official\ prx\ go\ here.txt
+	install -d cxmb_release/lite/cxmb/
+	install -d cxmb_release/lite/PSP/THEME/
+	cp support/random.ctf cxmb_release/lite/PSP/THEME/
+	install -d cxmb_release/lite/seplugins/
+	echo ms0:/cxmb/cxmb.prx > cxmb_release/lite/seplugins/vsh.txt
+	make full
+	install -C cxmb.prx cxmb_release/full/cxmb/
+	make lite
+	install -C cxmb.prx cxmb_release/lite/cxmb/
+	cp support/readme.txt cxmb_release/
+	tar czf cxmb_release.tar.gz cxmb_release
