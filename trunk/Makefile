@@ -35,6 +35,15 @@ debug:
 	make clean
 	DEBUG=1 make -f Makefile.PSP
 	
+install:
+	cp cxmb.prx /Volumes/NO\ NAME/cxmb/
+	rm -f /Volumes/NO\ NAME/log.txt
+	rm -rf /Volumes/NO\ NAME/DUMP
+	diskutil eject /Volumes/NO\ NAME/
+
+vlog:
+	mate /Volumes/NO\ NAME/log.txt
+	
 release:
 	rm -f cxmb_release.tar.gz
 	rm -rf cxmb_release
