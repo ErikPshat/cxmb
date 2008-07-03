@@ -6,18 +6,22 @@
 http://www.2alien.info
 http://www.2alien.net
 
-CXMB 3.2 for 3.71m33/3.80m33/3.90m33/4.01m33 by Poison
+CXMB 3.2.1 for 3.71m33/3.80m33/3.90m33/4.01m33 by Poison
 ==============================
 
 A hand-made PSP XMB theme (witch is usually hex edited from the official PSP firmware files) enabler.
 
 
 -=FEATURE=-
+3.2.1:
+-Fix bug ( freeze while applying theme )
+-Fix bug ( restore to original official XMB when returns from game )
++make official XMB not a choice of random.
 3.2:
 +Add 4.01 capability.
 +Select the random.ctf, then cxmb will randomly apply your themes in /PSP/THEME/
 +Compile universal binary, cxmb.prx should work on 3.71/3.80/3.90/4.01
-+Fix some wrong io opration (I wrote some sceIoClose where there should be sceIoDclose)
+-Fix some wrong io opration (I wrote some sceIoClose where there should be sceIoDclose)
 +Clean up sources (yea... I think I did it..)
 3.1:
 +You can build .ctf file with a ptf that including wallpaper.
