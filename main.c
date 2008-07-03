@@ -368,18 +368,17 @@ int IoClose_new( PspIoDrvFileArg * arg )
 	}
 	if ( arg->arg == t_record )
 	{
-		#if _DEBUG >= 1
 		log( "write finished!\n" );
-		#endif
 		int fd = sceIoOpen( CXMB_CONF_FILE, PSP_O_RDWR | PSP_O_CREAT | PSP_O_TRUNC, 0777 );
 		if ( fd < 0 )
 		{
-			#if _DEBUG >= 1
 			log( "failed in openning %s\n", CXMB_CONF_FILE );
-			#endif
 		}
-		sceIoWrite( fd, selected_theme_file, strlen( selected_theme_file ) + 1 );
-		sceIoClose( fd );
+		else
+		{
+			sceIoWrite( fd, selected_theme_file, strlen( selected_theme_file ) + 1 );
+			sceIoClose( fd );
+		}
 		IoClose( arg );
 		sceKernelSignalSema( sema, 1 );
 	}
@@ -482,18 +481,14 @@ int randomCtf( char * theme )
 	memset( &ent, 0, sizeof( SceIoDirent ) );
 	while ( sceIoDread( dfd, &ent ) > 0 )
 	{
-		if ( ( ent.d_stat.st_attr & FIO_SO_IFDIR ) || ent.d_name[0] == '.' )
-		{
-			continue;
-		}
-		if ( endwithistr( ent.d_name, "ctf" ) )
+		if ( !( ent.d_stat.st_attr & FIO_SO_IFDIR ) && ent.d_name[0] != '.' && cmpistr( ent.d_name, "random.ctf" ) && endwithistr( ent.d_name, ".ctf" ) )
 		{
 			th_count ++;
 		}
+		log( "name %s %d\n", ent.d_name, th_count );
 		memset( &ent, 0, sizeof( SceIoDirent ) );
 	}
 	sceIoDclose( dfd );
-	th_count --;
 	if ( th_count <= 0 )
 		return -1;
 	if ( th_count > 1 )
@@ -506,18 +501,15 @@ int randomCtf( char * theme )
 	memset( &ent, 0, sizeof( SceIoDirent ) );
 	while ( sceIoDread( dfd, &ent ) > 0 )
 	{
-		if ( ( ent.d_stat.st_attr & FIO_SO_IFDIR ) || ent.d_name[0] == '.' || !cmpistr( theme_file, "random.ctf" ) )
-		{
-			continue;
-		}
-		if ( endwithistr( ent.d_name, "ctf" ) )
+		log( "name %s %d\n", ent.d_name, th_count );
+		if ( !( ent.d_stat.st_attr & FIO_SO_IFDIR ) && ent.d_name[0] != '.' && cmpistr( ent.d_name, "random.ctf" ) && endwithistr( ent.d_name, "ctf" ) )
 		{
 			if ( th_count == 0 )
 			{
 				sprintf( theme, "/PSP/THEME/%s", ent.d_name );
 				break;
 			}
-			th_count --;
+			else th_count --;
 		}
 		memset( &ent, 0, sizeof( SceIoDirent ) );
 	}
@@ -550,8 +542,9 @@ int install_cxmb( void )
 	}
 	sceIoClose( fd );
 	
-	if ( strstr( theme_file, "random.ctf" ) || strstr( theme_file, "RANDOM.CTF" ) )
+	if ( endwithistr( theme_file, "random.ctf" ) )
 	{
+		log( "random\n" );
 		randomCtf( theme_file );
 	}
 	
@@ -646,7 +639,7 @@ int main_thread(SceSize args, void *argp)
 {
 	sema = sceKernelCreateSema( "cxmb_reboot", 0, 0, 1, NULL );
 	sceKernelWaitSemaCB( sema, 1, NULL );
-	sceKernelDelayThread( 1500000 );
+	sceKernelDelayThread( 2500000 );
 	log( "reboot!\n" );
 	rebootPsp();
 	return 0;
@@ -655,6 +648,7 @@ int main_thread(SceSize args, void *argp)
 int module_start( SceSize args, void *argp )
 {
 	int fw = initPatches();
+	sceIoAssign("ms0:", "msstor0p1:", "fatms0:", IOASSIGN_RDWR, NULL, 0);
 	log( "Firmware Version: %08x\n", fw );
 	cxmb_magic = getMagic();
 	if ( cxmb_magic == 0 )
