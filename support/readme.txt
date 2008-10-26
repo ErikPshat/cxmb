@@ -6,13 +6,15 @@
 http://www.2alien.info
 http://www.2alien.net
 
-CXMB 3.2.1 for 3.71m33/3.80m33/3.90m33/4.01m33 by Poison
+CXMB 3.3 for 3.71+ by Poison
 ==============================
 
 A hand-made PSP XMB theme (witch is usually hex edited from the official PSP firmware files) enabler.
 
 
 -=FEATURE=-
+3.3:
++Add 5.0 capability.
 3.2.1:
 -Fix bug ( freeze while applying theme )
 -Fix bug ( restore to original official XMB when returns from game )
@@ -36,8 +38,8 @@ before 3.0:
 
 
 -=REQUIREMENTS=-
-A PSP (either fat or slim one) with 3.71m33/3.80m33/3.90m33/4.01m33 custom firmware (or whatever CFW (3.71/3.80/3.90/4.01) with which you can start cxmb.prx while PSP booting into XMB) installed.
-3 decrypted prx (paf.prx, common_gui.prx, vshmain.prx) from official 3.71/3.80/3.90/4.01 update EBOOT.PBP if you want to use CXMB full version to convert traditional XMB theme to a .ctf file.
+A PSP (either fat or slim one) with 3.71+ m33 custom firmware (or whatever CFW (3.71/3.80/3.90/4.01) with which you can start cxmb.prx while PSP booting into XMB) installed.
+3 decrypted prx (paf.prx, common_gui.prx, vshmain.prx) from official 3.71+ update EBOOT.PBP if you want to use CXMB full version to convert traditional XMB theme to a .ctf file.
 
 
 -=CXMB INSTALLATION=-
@@ -132,6 +134,7 @@ FW 3.71: 0xDEAD0371
 FW 3.80: 0xDEAD0380
 FW 3.90: 0xDEAD0390
 FW 4.01: 0xDEAD0401
+FW 5.00: 0xDEAD0500
 -Restore to original theme before you install CXMB.
 -You can't see official ptf theme in theme setting after you enabling CXMB.
 -After you apply a theme in XMB's theme setting, it will reboot PSP automatically.

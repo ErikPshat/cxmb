@@ -33,6 +33,7 @@ enum PspFwVersion
 	FW_380 = 0x03080010,
 	FW_390 = 0x03090010,
 	FW_401 = 0x04000110,
+	FW_500 = 0x05000010,
 };
 
 typedef struct tSceModule {
