@@ -56,6 +56,8 @@ unsigned int getMagic( void )
 		magic = 0xDEAD0390;
 	else if ( fw_version == FW_401 )
 		magic = 0xDEAD0401;
+	else if ( fw_version == FW_500 )
+		magic = 0xDEAD0500;
 	return magic;
 }
 
@@ -71,6 +73,8 @@ unsigned int getFindDriverAddr( void )
 		addr = pMod->text_addr + 0x00002808;
 	else if ( fw_version == FW_401 )
 		addr = pMod->text_addr + 0x000027EC;
+	else if ( fw_version == FW_500 )
+		addr = pMod->text_addr + 0x00002838;
 	return addr;
 }
 
@@ -83,5 +87,7 @@ unsigned int getSysconfOffset( void )
 		offset = 0x0000476C;
 	else if ( fw_version == FW_401 )
 		offset = 0x00007708;
+	else if ( fw_version == FW_500 )
+		offset = 0x00026050;
 	return offset;
 }

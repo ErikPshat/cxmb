@@ -453,17 +453,22 @@ int OnModuleStart( tSceModule * mod )
 	else if ( strcmp( mod->modname, "sysconf_plugin_module" ) == 0 )
 	{
 		unsigned int offset = getSysconfOffset();
-		unsigned int h_addr = _lw( mod->text_addr + offset );
-		unsigned int l_addr = _lw( mod->text_addr + offset + 0xC );
-		unsigned int addr = ( ( h_addr & 0xFFFF ) << 16 ) | ( l_addr & 0xFFFF );
-		char * sfx = "CTF";
-		_sw( *( unsigned int * )sfx, addr );
-		/*char * sfx = sceKernelAllocHeapMemory( mem_id, 4 );
-		strcpy( sfx, "CTF" );
-		unsigned int addr = ( unsigned int )sfx;
-		unsigned int offset = getSysconfOffset();
-		_sw( 0x3C050000 | ( addr >> 16 ) , mod->text_addr + offset );
-		_sw( 0x24A50000 | ( addr & 0x0000FFFF ) , mod->text_addr + offset + 0xC );*/
+		if ( fw_version == FW_500 )
+		{
+			unsigned int addr = mod->text_addr + offset;
+			char *sfx = (char *)addr;
+			sfx[0] = 'C';
+		}
+		else
+		{
+			unsigned int h_addr = _lw( mod->text_addr + offset );
+			unsigned int l_addr = _lw( mod->text_addr + offset + 0xC );
+			unsigned int addr = ( ( h_addr & 0xFFFF ) << 16 ) | ( l_addr & 0xFFFF );
+			char * sfx = "CTF";
+			_sw( *( unsigned int * )sfx, addr );
+		}
+		sceKernelIcacheInvalidateAll();
+		sceKernelDcacheWritebackInvalidateAll();
 		log( "patched sysconf\n" );
 	}
 	if ( !previous )

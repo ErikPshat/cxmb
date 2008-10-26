@@ -24,6 +24,8 @@
 
 #pragma once
 
+extern int fw_version;
+
 extern int initPatches( void );
 
 extern unsigned int getMagic( void );
